@@ -1,46 +1,19 @@
 class Solution {
 public:
     vector<string> removeAnagrams(vector<string>& words) {
-       int n=words.size();
-       vector<unordered_map<char,int>> farray(n);
-       for(int i=0;i<n;i++)
-            for(auto c:words[i])
-                farray[i][c]++;
+        vector<string> result;
+        vector<int> prevCount(26, 0);
 
-        bool isUpdated=true;
-        while(isUpdated)
-        {
-            isUpdated=false;
-            for(int i=0;i<n;i++)
-            {
-                if(words[i]=="") continue;
-                else
-                {
-                    int j=i+1;
-                    while(j<n)
-                    {
-                        if(words[j]=="") {
-                            j++;
-                        }
-                        else if(farray[j]==farray[i])
-                        {
-                        words[j]="";
-                        j++;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
+        for (auto& w : words) {
+            vector<int> currCount(26, 0);
+            for (char c : w) currCount[c - 'a']++;
+
+            if (currCount != prevCount) {
+                result.push_back(w);
+                prevCount = currCount;
             }
         }
 
-        vector<string> ans;
-        for(auto &word:words)
-            if(word!="")
-                ans.push_back(word);
-
-        return ans;
+        return result;
     }
 };
